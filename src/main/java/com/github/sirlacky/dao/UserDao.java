@@ -107,7 +107,7 @@ public class UserDao {
 
     public ArrayList<User> findAll() {
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            ArrayList<User> usersList= new ArrayList<>();
+            ArrayList<User> usersList = new ArrayList<>();
             PreparedStatement statement = conn.prepareStatement(FIND_ALL_USERS_QUERY);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -120,8 +120,10 @@ public class UserDao {
             }
             return usersList;
         } catch (SQLException e) {
-            e.printStackTrace(); return null;
-        }}
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 
 }
