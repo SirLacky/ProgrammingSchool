@@ -1,7 +1,7 @@
 package com.github.sirlacky.dao;
 
 import com.github.sirlacky.model.Solution;
-import com.github.sirlacky.model.User;
+import com.github.sirlacky.service.ConnectionManager;
 
 import java.util.Date;
 import java.sql.*;
@@ -9,11 +9,6 @@ import java.util.ArrayList;
 
 public class SolutionDao {
 
-    // Connection Data
-
-    private final String URL = "jdbc:mysql://localhost:3306/programming_school?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false&characterEncoding=utf8";
-    private final String USER = "root";
-    private final String PASSWORD = "coderslab";
 
     // CRUD (Create Read Update Delete)
 
@@ -26,7 +21,7 @@ public class SolutionDao {
     // Coresponding Methods
 
     public Solution create(Solution solution) {
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try (Connection conn = ConnectionManager.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(CREATE_SOLUTION_QUERY, Statement.RETURN_GENERATED_KEYS);
             statement.setDate(1, solution.getCreated());
             statement.setDate(2, solution.getUpdated());
@@ -46,7 +41,7 @@ public class SolutionDao {
     }
 
     public Solution readById(int solutionId) {
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try (Connection conn = ConnectionManager.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(READ_SOLUTION_QUERY);
             statement.setInt(1, solutionId);
             ResultSet resultSet = statement.executeQuery();
@@ -68,7 +63,7 @@ public class SolutionDao {
 
 
     public void update(Solution solution) {
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try (Connection conn = ConnectionManager.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(UPDATE_SOLUTION_QUERY);
             statement.setDate(1, solution.getUpdated());
             statement.setString(2, solution.getDescription());
@@ -83,7 +78,7 @@ public class SolutionDao {
 
 
     public void delete(int solutionId) {
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try (Connection conn = ConnectionManager.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(DELETE_SOLUTION_QUERY);
             statement.setInt(1, solutionId);
             statement.executeUpdate();
@@ -93,7 +88,7 @@ public class SolutionDao {
     }
 
     public ArrayList<Solution> findAll() {
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try (Connection conn = ConnectionManager.getConnection()) {
             ArrayList<Solution> solutionsList = new ArrayList<>();
             PreparedStatement statement = conn.prepareStatement(FIND_ALL_SOLUTION_QUERY);
             ResultSet resultSet = statement.executeQuery();

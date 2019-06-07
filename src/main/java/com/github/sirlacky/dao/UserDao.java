@@ -1,18 +1,13 @@
 package com.github.sirlacky.dao;
 
 import com.github.sirlacky.model.User;
+import com.github.sirlacky.service.ConnectionManager;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class UserDao {
-
-    // Connection Data
-
-    private final String URL = "jdbc:mysql://localhost:3306/programming_school?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false&characterEncoding=utf8";
-    private final String USER = "root";
-    private final String PASSWORD = "coderslab";
 
     // CRUD (Create Read Update Delete)
 
@@ -26,7 +21,7 @@ public class UserDao {
     // Coresponding Methods
 
     public User create(User user) {
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try (Connection conn = ConnectionManager.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(CREATE_USER_QUERY, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, user.getUserName());
             statement.setString(2, user.getEmail());
@@ -44,7 +39,7 @@ public class UserDao {
     }
 
     public User readById(int userId) {
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try (Connection conn = ConnectionManager.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(READ_USER_QUERY);
             statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();
@@ -64,7 +59,7 @@ public class UserDao {
 
 
     public User readByEmail(String email) {
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try (Connection conn = ConnectionManager.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(READ_USER_BY_MAIL_QUERY);
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
@@ -83,7 +78,7 @@ public class UserDao {
     }
 
     public void update(User user) {
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try (Connection conn = ConnectionManager.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(UPDATE_USER_QUERY);
             statement.setString(1, user.getUserName());
             statement.setString(2, user.getEmail());
@@ -96,7 +91,7 @@ public class UserDao {
     }
 
     public void delete(int userId) {
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try (Connection conn = ConnectionManager.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(DELETE_USER_QUERY);
             statement.setInt(1, userId);
             statement.executeUpdate();
@@ -106,7 +101,7 @@ public class UserDao {
     }
 
     public ArrayList<User> findAll() {
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try (Connection conn = ConnectionManager.getConnection()) {
             ArrayList<User> usersList = new ArrayList<>();
             PreparedStatement statement = conn.prepareStatement(FIND_ALL_USERS_QUERY);
             ResultSet resultSet = statement.executeQuery();
