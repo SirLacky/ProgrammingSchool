@@ -2,8 +2,6 @@ package com.github.sirlacky.dao;
 
 import com.github.sirlacky.model.Solution;
 import com.github.sirlacky.service.ConnectionManager;
-
-import java.util.Date;
 import java.sql.*;
 import java.util.ArrayList;
 
