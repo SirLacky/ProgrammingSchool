@@ -5,7 +5,7 @@ public class UserGroup {
     private Long id;
     private String name;
 
-    
+
     public UserGroup() {
     }
 
