@@ -15,8 +15,48 @@ public class SolutionDao {
     private static final String UPDATE_SOLUTION_QUERY = "UPDATE solution SET updated = ?, description = ?, exercise_id = ?, users_id = ? where id = ?";
     private static final String DELETE_SOLUTION_QUERY = "DELETE FROM solution WHERE id = ?";
     private static final String FIND_ALL_SOLUTION_QUERY = "SELECT * FROM solution";
+    private static final String FIND_ALL_SOLUTIONS_BY_USER_ID_QUERY = "SELECT solution.id, created, updated, description FROM solution JOIN users ON users.id=solution.users_id WHERE users.id=?";
+    private static final String FIND_ALL_SOLUTIONS_AND_SORT_BY_CREATED_QUERY = "SELECT solution.id, created, updated, solution.description FROM solution JOIN exercise ON exercise.id=solution.exercise_id WHERE exercise.id=? ORDER BY created DESC";
 
     // Coresponding Methods
+
+    public Solution sortSolutionsByCreated (int excerciseId){
+        try (Connection conn = ConnectionManager.getConnection()){
+            PreparedStatement statement = conn.prepareStatement(FIND_ALL_SOLUTIONS_AND_SORT_BY_CREATED_QUERY);
+            statement.setInt(1,excerciseId);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()){
+                Solution solution = new Solution();
+                solution.setId(resultSet.getLong("id"));
+                solution.setCreated(resultSet.getDate("created"));
+                solution.setUpdated(resultSet.getDate("updated"));
+                solution.setDescription(resultSet.getString("description"));
+                return solution;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Solution readByUserId (int userId){
+        try (Connection conn = ConnectionManager.getConnection()){
+            PreparedStatement statement = conn.prepareStatement(FIND_ALL_SOLUTIONS_BY_USER_ID_QUERY);
+            statement.setInt(1,userId);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()){
+                Solution solution = new Solution();
+                solution.setId(resultSet.getLong("id"));
+                solution.setCreated(resultSet.getDate("created"));
+                solution.setUpdated(resultSet.getDate("updated"));
+                solution.setDescription(resultSet.getString("description"));
+                return solution;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public Solution create(Solution solution) {
         try (Connection conn = ConnectionManager.getConnection()) {
