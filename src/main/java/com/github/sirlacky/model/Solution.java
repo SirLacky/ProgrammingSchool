@@ -70,4 +70,16 @@ public class Solution {
     public void setUsersId(Long usersId) {
         this.usersId = usersId;
     }
+
+    @Override
+    public String toString() {
+        return "Solution{" +
+                "id=" + id +
+                ", created=" + created +
+                ", updated=" + updated +
+                ", description='" + description + '\'' +
+                ", exerciseId=" + exerciseId +
+                ", usersId=" + usersId +
+                '}';
+    }
 }
