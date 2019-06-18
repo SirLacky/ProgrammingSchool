@@ -1,15 +1,11 @@
 package com.github.sirlacky;
 
-import com.github.sirlacky.dao.SolutionDao;
 import com.github.sirlacky.dao.UserDao;
-import com.github.sirlacky.model.Solution;
+import com.github.sirlacky.dao.ExerciseDao;
+import com.github.sirlacky.model.Exercise;
 import com.github.sirlacky.model.User;
 
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,9 +16,10 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
         UserDao userDao = new UserDao();
+        ExerciseDao exerciseDao = new ExerciseDao();
         System.out.println("Witaj w programie! Wybierz interesujący cię panel: ");
-        System.out.println("Administrator [1]");
-        System.out.println("User [2]");
+        System.out.println("Panel Administracyjny - zarządzanie użytkownikami [1]");
+        System.out.println("Panel Administracyjny - zarządzanie zadaniami [2]");
         int nextInt = scanner.nextInt();
 
         if (nextInt == 1) {
@@ -74,14 +71,66 @@ public class Main {
                 int userId = scan.nextInt();
                 userDao.delete(userId);
                 System.out.println("Usunięto użytkownika o id: "+userId);
-                
+
+            } else {
+                System.out.println("Koniec panelu Administracyjnego");
+            }
+
+        } else if (nextInt == 2) {
+            System.out.println("Witaj Adminie. Oto lista zadań: ");
+
+            List<Exercise>exercises = exerciseDao.findAll();
+            System.out.println(exercises.toString());
+
+            System.out.println("Wpisz komende: add / edit / delete / quit");
+            Scanner scan = new Scanner(System.in);
+            String adminCommend = scan.nextLine();
+
+            if (adminCommend.equals("add")) {
+                Scanner scan1 = new Scanner(System.in);
+                Exercise exercise = new Exercise();
+                System.out.println("Podaj tytuł zadania: ");
+                String title = scan.next();
+                exercise.setTitle(title);
+                System.out.println("Podaj opis zadania: ");
+                String description = scan.next();
+                exercise.setDescription(description);
+                exerciseDao.create(exercise);
+
+            } else if (adminCommend.equals("edit")) {
+                Scanner scan1 = new Scanner(System.in);
+                System.out.println("Podaj id zadania do edycji: ");
+                int exerciseId = scan.nextInt();
+                Exercise exercise = new Exercise();
+                exercise = exerciseDao.readById(exerciseId);
+                System.out.println("Edycja zadania: " + exercise.toString());
+                System.out.println("Podaj nowy tytuł zadania: ");
+                String title = scan.next();
+                exercise.setTitle(title);
+                System.out.println("Podaj nowy opis zadania: ");
+                String description = scan.next();
+                exercise.setDescription(description);
+                exerciseDao.update(exercise);
+                System.out.println("Zedytowano zadanie: " + exercise.toString());
+
+            } else if (adminCommend.equals("delete")) {
+
+                Scanner scan2 = new Scanner(System.in);
+                System.out.println("Podaj id zadania do usunięcia: ");
+                int exerciseId = scan.nextInt();
+                exerciseDao.delete(exerciseId);
+                System.out.println("Usunięto zadanie o id: "+exerciseId);
+
             } else {
                 System.out.println("Koniec panelu Administracyjnego");
             }
 
 
-        } else if (nextInt == 2) {
-            System.out.println("Witaj Userze");
+
+
+
+
+
         } else {
             System.out.println("Wprowadzono nieproprawne dane");
         }
