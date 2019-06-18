@@ -2,8 +2,10 @@ package com.github.sirlacky;
 
 import com.github.sirlacky.dao.UserDao;
 import com.github.sirlacky.dao.ExerciseDao;
+import com.github.sirlacky.dao.UserGroupDao;
 import com.github.sirlacky.model.Exercise;
 import com.github.sirlacky.model.User;
+import com.github.sirlacky.model.UserGroup;
 
 
 import java.util.List;
@@ -17,9 +19,12 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         UserDao userDao = new UserDao();
         ExerciseDao exerciseDao = new ExerciseDao();
+        UserGroupDao userGroupDao = new UserGroupDao();
+
         System.out.println("Witaj w programie! Wybierz interesujący cię panel: ");
         System.out.println("Panel Administracyjny - zarządzanie użytkownikami [1]");
         System.out.println("Panel Administracyjny - zarządzanie zadaniami [2]");
+        System.out.println("Panel Administracyjny - zarządzanie grupami [3]");
         int nextInt = scanner.nextInt();
 
         if (nextInt == 1) {
@@ -44,6 +49,7 @@ public class Main {
                 String email = scan.next();
                 user.setEmail(email);
                 userDao.create(user);
+                System.out.println("Dodano użytkownika: "+user.toString());
 
             } else if (adminCommend.equals("edit")) {
                 Scanner scan1 = new Scanner(System.in);
@@ -96,6 +102,7 @@ public class Main {
                 String description = scan.next();
                 exercise.setDescription(description);
                 exerciseDao.create(exercise);
+                System.out.println("Dodano zadanie: "+exercise.toString());
 
             } else if (adminCommend.equals("edit")) {
                 Scanner scan1 = new Scanner(System.in);
@@ -125,7 +132,49 @@ public class Main {
                 System.out.println("Koniec panelu Administracyjnego");
             }
 
+        } else if (nextInt == 3) {
+            System.out.println("Witaj Adminie. Oto lista grup: ");
 
+            List<UserGroup>userGroupList = userGroupDao.findAll();
+            System.out.println(userGroupList.toString());
+
+            System.out.println("Wpisz komende: add / edit / delete / quit");
+            Scanner scan = new Scanner(System.in);
+            String adminCommend = scan.nextLine();
+
+            if (adminCommend.equals("add")) {
+                Scanner scan1 = new Scanner(System.in);
+                UserGroup userGroup = new UserGroup();
+                System.out.println("Podaj nazwę grupy: ");
+                String name = scan.next();
+                userGroup.setName(name);
+                userGroupDao.create(userGroup);
+                System.out.println("Dodano grupę: "+userGroup.toString());
+
+            } else if (adminCommend.equals("edit")) {
+                Scanner scan1 = new Scanner(System.in);
+                System.out.println("Podaj id grupy do edycji: ");
+                int userGroupId = scan.nextInt();
+                UserGroup userGroup = new UserGroup();
+                userGroup = userGroupDao.readById(userGroupId);
+                System.out.println("Edycja grupy: " + userGroup.toString());
+                System.out.println("Podaj nową nazwę dl agrupy: ");
+                String name = scan.next();
+                userGroup.setName(name);
+                userGroupDao.update(userGroup);
+                System.out.println("Zedytowano grupę: " + userGroup.toString());
+
+            } else if (adminCommend.equals("delete")) {
+
+                Scanner scan2 = new Scanner(System.in);
+                System.out.println("Podaj id grupy usunięcia: ");
+                int userGroupId = scan.nextInt();
+                userGroupDao.delete(userGroupId);
+                System.out.println("Usunięto grupę o id: "+userGroupId);
+
+            } else {
+                System.out.println("Koniec panelu Administracyjnego");
+            }
 
 
 
