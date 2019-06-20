@@ -12,8 +12,7 @@ import com.github.sirlacky.model.UserGroup;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.sql.Date;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -26,6 +25,7 @@ public class Main {
         UserDao userDao = new UserDao();
         ExerciseDao exerciseDao = new ExerciseDao();
         UserGroupDao userGroupDao = new UserGroupDao();
+        SolutionDao solutionDao = new SolutionDao();
 
         System.out.println("Witaj w programie! Wybierz interesujący cię panel: ");
         System.out.println("Panel Administracyjny - zarządzanie użytkownikami [1]");
@@ -203,21 +203,21 @@ public class Main {
                 Solution solution = new Solution();
                 solution.setUsersId((long) userId);
                 solution.setExerciseId((long) exerciseId);
-                SolutionDao solutionDao = new SolutionDao();
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date = new Date();
+                solution.setCreated(dateFormat.format(date));
                 solutionDao.create(solution);
             }
             else if (adminCommend.equals("view")){
-
-
-
+                System.out.println("Podaj id użytkownika którego chcesz zobaczyć rozwiązania: ");
+                Scanner scan1 = new Scanner(System.in);
+                int userId = scan1.nextInt();
+                List<Solution>solutions = solutionDao.readByUserId(userId);
+                System.out.println("Rozwiązania użytkownika o id: "+userId);
+                System.out.println(solutions);
             }else{
                 System.out.println("Koniec panelu Administracyjnego");
             }
-
-
-            
-
-
 
         } else {
             System.out.println("Wprowadzono nieproprawne dane");

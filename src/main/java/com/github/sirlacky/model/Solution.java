@@ -6,13 +6,13 @@ import java.sql.Date;
 public class Solution {
 
     private Long id;
-    private Date created;
-    private Date updated;
+    private String created;
+    private String updated;
     private String description;
     private Long exerciseId;
     private Long usersId;
 
-    public Solution(Long id, Date created, Date updated, String description, Long exerciseId, Long usersId) {
+    public Solution(Long id, String created, String updated, String description, Long exerciseId, Long usersId) {
         this.created = created;
         this.updated = updated;
         this.description = description;
@@ -31,19 +31,19 @@ public class Solution {
         this.id = id;
     }
 
-    public Date getCreated() {
+    public String getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(String created) {
         this.created = created;
     }
 
-    public Date getUpdated() {
+    public String getUpdated() {
         return updated;
     }
 
-    public void setUpdated(Date updated) {
+    public void setUpdated(String updated) {
         this.updated = updated;
     }
 
