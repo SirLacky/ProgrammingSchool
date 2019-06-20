@@ -1,13 +1,19 @@
 package com.github.sirlacky;
 
+import com.github.sirlacky.dao.SolutionDao;
 import com.github.sirlacky.dao.UserDao;
 import com.github.sirlacky.dao.ExerciseDao;
 import com.github.sirlacky.dao.UserGroupDao;
 import com.github.sirlacky.model.Exercise;
+import com.github.sirlacky.model.Solution;
 import com.github.sirlacky.model.User;
 import com.github.sirlacky.model.UserGroup;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,6 +31,7 @@ public class Main {
         System.out.println("Panel Administracyjny - zarządzanie użytkownikami [1]");
         System.out.println("Panel Administracyjny - zarządzanie zadaniami [2]");
         System.out.println("Panel Administracyjny - zarządzanie grupami [3]");
+        System.out.println("Panel Administracyjny - przypisywanie zadań [4]");
         int nextInt = scanner.nextInt();
 
         if (nextInt == 1) {
@@ -176,7 +183,39 @@ public class Main {
                 System.out.println("Koniec panelu Administracyjnego");
             }
 
+        } else if (nextInt == 4) {
+            System.out.println("Wybierz jedną z opcji: ");
+            System.out.println("Wpisz komende: add (przypisanie zadań do usera / view (przegląd zadań usera) / quit");
+            Scanner scan = new Scanner(System.in);
+            String adminCommend = scan.nextLine();
 
+            if (adminCommend.equals("add")) {
+                List<User> users = userDao.findAll();
+                System.out.println("Lista użytkowników: " + users.toString());
+                Scanner scan1 = new Scanner(System.in);
+                System.out.println("Podaj ID użytkownika:");
+                int userId = scan1.nextInt();
+                List<Exercise> exercises = exerciseDao.findAll();
+                System.out.println("Oto lista zadań: " + exercises.toString());
+                System.out.println("Podaj ID zadania:");
+                int exerciseId = scan1.nextInt();
+
+                Solution solution = new Solution();
+                solution.setUsersId((long) userId);
+                solution.setExerciseId((long) exerciseId);
+                SolutionDao solutionDao = new SolutionDao();
+                solutionDao.create(solution);
+            }
+            else if (adminCommend.equals("view")){
+
+
+
+            }else{
+                System.out.println("Koniec panelu Administracyjnego");
+            }
+
+
+            
 
 
 
